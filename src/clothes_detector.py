@@ -2,6 +2,7 @@ import os
 import werkzeug
 import cv2
 import numpy as np
+import torch
 
 from flask_restful import reqparse, Resource
 
@@ -20,6 +21,7 @@ class ClothesDetector(Resource):
         cfg.MODEL.WEIGHTS = model_path
         cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
         cfg.MODEL.ROI_HEADS.NUM_CLASSES = 13
+        cfg.MODEL.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         self.model = DefaultPredictor(cfg)
 
