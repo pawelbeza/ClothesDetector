@@ -12,6 +12,10 @@ from detectron2.engine import DefaultPredictor
 
 
 class ClothesDetector(Resource):
+    clothes_categories = ['short_sleeved_shirt', 'long_sleeved_shirt', 'short_sleeved_outwear', 'long_sleeved_outwear',
+                          'vest', 'sling', 'shorts', 'trousers', 'skirt', 'short_sleeved_dress', 'long_sleeved_dress',
+                          'vest_dress', 'sling_dress']
+
     def __init__(self, model_path=str(os.environ.get('MODEL_PATH', '../models/model.pth'))):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('image', type=werkzeug.datastructures.FileStorage, required=True, location='files')
@@ -36,10 +40,12 @@ class ClothesDetector(Resource):
         predictions = self.model(img)['instances']
         boxes = predictions.pred_boxes.tensor.tolist() if predictions.has("pred_boxes") else None
         scores = predictions.scores.tolist() if predictions.has("scores") else None
-        classes = predictions.pred_classes.tolist() if predictions.has("pred_classes") else None
+        class_indexes = predictions.pred_classes.tolist() if predictions.has("pred_classes") else None
+
+        class_names = [self.clothes_categories[x] for x in class_indexes]
 
         return {
             'boxes': boxes,
-            'classes': classes,
+            'classes': class_names,
             'scores': scores
         }
