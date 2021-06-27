@@ -6,7 +6,8 @@ Microservice detecting clothes on given image using:
 Download model from [here](https://drive.google.com/drive/folders/14SHB5GhqrWO1hA-gs1hC2FL_cX3LLRAz?usp=sharing) and place it in *models* dir.
 Examplary download using [gdown](https://pypi.org/project/gdown/) tool:  
 `mkdir models && gdown -O ./models/model.pth --id google_drive_id`
-
+### Quick note
+Model architecture and other details can be found in the following repository https://github.com/pawelbeza/ClothesDetectorModel
 ## Build  
 `docker build -t clothes-detector .`
 
